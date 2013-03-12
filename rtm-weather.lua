@@ -46,10 +46,8 @@ if (hour == 7) then -- 11:00pm eastern time
 			text = 'Forecast\n' .. body
 		}
 	
-		return 'Forecast for tomorrow calls for precipitation. Message sent.'
+		log('Forecast for tomorrow calls for precipitation. Message sent.')
 	else
-		return 'Forecast for tomorrow does not call for precipitation.'
+		log('Forecast for tomorrow does not call for precipitation.')
 	end
-else
-	return 'It is not time yet.'
 end
