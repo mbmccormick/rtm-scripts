@@ -50,7 +50,7 @@ for key, value in pairs(data.VCALENDAR.VEVENT) do
 				password = 'PASSWORD',
 				from = 'EMAIL_ADDRESS',
 				to = 'RTM_EMAIL_ADDRESS',
-				subject = value.SUMMARY .. ' ^' .. os.date('%m/%d', birthdayDate),
+				subject = value.SUMMARY .. ' ^' .. os.date('%m/%d', birthdayDate) .. ' !',
 				text = ''
 			}
 		end
