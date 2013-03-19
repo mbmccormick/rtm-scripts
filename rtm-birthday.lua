@@ -16,15 +16,21 @@ function parseDay(value)
 	return tonumber(value:sub(7, 8))
 end
 
--- main execution thread
-local response = http.request {
-	url = 'http://ical2json.herokuapp.com/yourserver.com/path/to/your/calendar.ics'
-}
+-- fetch calendar data, if not already cached
+if storage.calendar == nil then
+	local response = http.request {
+		url = 'http://ical2json.herokuapp.com/yourserver.com/path/to/your/calendar.ics'
+	}
+	
+	storage.calendar = response.content
+end
 
-local data = json.parse(response.content)
+-- parse calendar data
+local data = json.parse(storage.calendar)
 
 local lookAheadDate = os.time() + (LOOK_AHEAD * 60 * 60 * 24)
 
+-- extract birthdays from calendar data
 for key, value in pairs(data.VCALENDAR.VEVENT) do
 	if endsWith(value.SUMMARY, '\'s Birthday') then
 		local birthdayDate = os.time {
@@ -34,9 +40,10 @@ for key, value in pairs(data.VCALENDAR.VEVENT) do
 		}
 		
 		if os.date('%m', birthdayDate) == os.date('%m', lookAheadDate) and
-		   os.date('%d', birthdayDate) == os.date('%d', lookAheadDate) then
+			 os.date('%d', birthdayDate) == os.date('%d', lookAheadDate) then
 			log(value.SUMMARY .. ' is on ' .. os.date('%m/%d', birthdayDate))
 			
+			-- create task in Remember The Milk via email
 			email.send {
 				server = 'SERVER_ADDRESS',
 				username = 'USERNAME',
