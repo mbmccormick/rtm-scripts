@@ -40,7 +40,7 @@ for key, value in pairs(data.VCALENDAR.VEVENT) do
 		}
 		
 		if os.date('%m', birthdayDate) == os.date('%m', lookAheadDate) and
-			 os.date('%d', birthdayDate) == os.date('%d', lookAheadDate) then
+		   os.date('%d', birthdayDate) == os.date('%d', lookAheadDate) then
 			log(value.SUMMARY .. ' is on ' .. os.date('%m/%d', birthdayDate))
 			
 			-- create task in Remember The Milk via email
